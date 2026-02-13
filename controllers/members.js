@@ -10,7 +10,7 @@ const addMembers = async (req, res) => {
 
     const { name, position, linkedin, github, instagram, description } = req.body;
     const profilePic = req.file
-    console.log(req.file);
+
 
     try {
 
