@@ -1,14 +1,44 @@
 
+import cloudinary from "../config/cloudinary.js";
 import Member from "../models/member.js";
+
+
 
 const addMembers = async (req, res) => {
 
-    console.log("Request body:", req.body);
+   
 
     const { name, position, linkedin, github, instagram, description } = req.body;
     const profilePic = req.file
+    console.log(req.file);
 
     try {
+
+        let url = "";
+        let publicId = "";
+
+        if(req.file){
+            try {
+                
+                const result = await cloudinary.uploader.upload(req.file.path, {
+                folder: "ojas/members",
+            
+          });
+                 url=result.secure_url
+                 publicId=result.public_id
+
+                 console.log("Image uploaded to Cloudinary:", result);
+
+            } catch (error) {
+                console.error("Error uploading image to Cloudinary:", error);
+                res.json({
+                    success: false,
+                    message: "Error uploading image",   
+                    error: error.message,
+                })
+                
+            }
+        }
 
         const newMember = new Member({
             name,
@@ -17,11 +47,18 @@ const addMembers = async (req, res) => {
             github,
             instagram,
             description,
+            profilePic: {
+                url,
+                publicId,
+            },
         });
         
         await newMember.save();
 
-        res.status(201).json({ message: "Member added successfully", member: newMember });
+        res.status(201).json({
+            success: true,
+            message: "Member added successfully",
+            member: newMember });
     } catch (error) {
         res.status(500).json({ message: "Error adding member", error: error.message });
         

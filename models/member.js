@@ -6,7 +6,8 @@ const memberSchema = new Schema({
    
     },
     profilePic: {
-        type: String,
+        url: String,
+        publicId: String,
      
     },
     position:{
