@@ -29,6 +29,10 @@ const memberSchema = new Schema({
     description: {
         type: String,
    
+    },
+    role:{
+        type: String,
+        default: "Member",
     }
 })
 

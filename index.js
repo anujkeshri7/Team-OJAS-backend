@@ -1,5 +1,6 @@
 import { configDotenv } from "dotenv";
 configDotenv();
+import cookieParser from "cookie-parser";
 
 const PORT = process.env.PORT || 5000;
 
@@ -9,6 +10,7 @@ import cors from "cors";
 import memberRoute from "./routes/addMembers.js";
 
 const app = express();
+
 
 // database connection
 import mongoose from "mongoose";
@@ -24,6 +26,8 @@ app.use(cors({
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+
+app.use(cookieParser());
 
 app.use(express.urlencoded({ extended: true }));
 
