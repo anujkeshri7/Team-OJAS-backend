@@ -53,7 +53,7 @@ const addProject = async (req, res) => {
         folder: "ojas/projects",
       });
     } catch (error) {
-      console.log("Cloudinary Upload Error:", error);
+      console.log("Error uploading image to Cloudinary:", error);
       return res.status(500).json({
         success: false,
         message: "Image upload failed",
