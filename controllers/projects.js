@@ -48,6 +48,7 @@ const addProject = async (req, res) => {
     /* ---------------- IMAGE UPLOAD ---------------- */
     let uploadedImage;
     try {
+      console.log("file uploading ", req.file)
       uploadedImage = await cloudinary.uploader.upload(req.file.path, {
         folder: "ojas/projects",
       });
