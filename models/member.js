@@ -10,6 +10,7 @@ const memberSchema = new Schema({
         publicId: String,
      
     },
+  
     position:{
         type: String,
     
@@ -26,7 +27,7 @@ const memberSchema = new Schema({
         type: String,
         
     },
-    description: {
+    bio: {
         type: String,
    
     },

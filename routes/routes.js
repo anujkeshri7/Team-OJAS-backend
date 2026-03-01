@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addMembers, fetchMembers } from "../controllers/members.js";
+import { addMembers, fetchMembers , deleteMember } from "../controllers/members.js";
 import upload from "../config/upload.js";
 import { 
     loginUser, 
@@ -15,6 +15,7 @@ import {
   getProjects,
   getProjectById,
   deleteProject,
+  editProject
 } from "../controllers/projects.js";
 import checkAuthMiddelware from "../middelware/checkAuth.js";
 
@@ -22,6 +23,7 @@ const router = Router();
 
 router.post("/add-member", upload.single("profilePic"), addMembers);
 router.get("/get-members", fetchMembers);
+router.delete("/remove-member/:id", checkAuthMiddelware, deleteMember);
 
 
 // User routes
@@ -50,12 +52,14 @@ router.get("/check-auth", checkAuth);
 
 
 // Project routes
-router.post("/add-project", upload.single("image"), addProject);
+router.post("/add-project", checkAuthMiddelware, upload.single("image"),  addProject);
 
 router.get("/get-projects", getProjects);
 
 router.get("/get-project/:id", getProjectById);
 
 router.delete("/delete-project/:id", checkAuthMiddelware, deleteProject);
+
+router.post("/edit-project/:id",checkAuthMiddelware,upload.single("image"),editProject)
 
 export default router;

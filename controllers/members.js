@@ -8,7 +8,7 @@ const addMembers = async (req, res) => {
 
    
 
-    const { name, position, linkedin, github, instagram, description } = req.body;
+    const { name, position, linkedin, github, instagram, bio } = req.body;
     const profilePic = req.file
 
 
@@ -46,11 +46,12 @@ const addMembers = async (req, res) => {
             linkedin,
             github,
             instagram,
-            description,
+            bio,
             profilePic: {
                 url,
                 publicId,
             },
+    
         });
         
         await newMember.save();
@@ -80,5 +81,51 @@ const fetchMembers = async (req, res) => {
     }
 }
 
+const deleteMember = async (req, res) => {
+    const { id } = req.params;
+    const user = req.user;
+     if(user.role !== "Admin" && user.role !== "SuperAdmin"){
+        return res.status(403).json({
+            success: false,
+            message: "Only Admins can delete members",
+        });
+     }
 
-export { addMembers  ,fetchMembers};
+     try {
+        
+        const member = await Member.findById(id);
+        if (!member) {
+            return res.status(404).json({
+                success: false,
+                message: "Member not found",
+            });
+        }
+        // Delete profile picture from Cloudinary
+        try {
+            await cloudinary.uploader.destroy(member.profilePic.publicId);
+        } catch (error) {
+            console.log("Error deleting profile picture from Cloudinary:", error);
+            // Proceed with member deletion even if image deletion fails
+        }
+
+        await Member.findByIdAndDelete(id);
+
+        res.status(200).json({
+            success: true,
+            message: "Member deleted successfully",
+        });
+
+     } catch (error) {
+
+        console.log("Error deleting member:", error);
+        res.status(500).json({
+            success: false,
+            message: "Error deleting member",
+            error: error.message,
+        });
+        
+     }
+}
+
+
+export { addMembers  ,fetchMembers, deleteMember};

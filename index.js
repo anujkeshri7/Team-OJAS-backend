@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 5000;
 import express from "express";
 import cors from "cors";
 
-import memberRoute from "./routes/addMembers.js";
+import memberRoute from "./routes/routes.js";
 
 const app = express();
 
