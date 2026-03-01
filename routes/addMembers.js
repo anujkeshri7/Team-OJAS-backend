@@ -14,6 +14,7 @@ import {
   addProject,
   getProjects,
   getProjectById,
+  deleteProject,
 } from "../controllers/projects.js";
 import checkAuthMiddelware from "../middelware/checkAuth.js";
 
@@ -54,5 +55,7 @@ router.post("/add-project", upload.single("image"), addProject);
 router.get("/get-projects", getProjects);
 
 router.get("/get-project/:id", getProjectById);
+
+router.delete("/delete-project/:id", checkAuthMiddelware, deleteProject);
 
 export default router;

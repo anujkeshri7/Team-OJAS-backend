@@ -140,6 +140,48 @@ const getProjectById = async (req, res) => {
     }
 }
 
+const deleteProject = async (req, res) => {
+      const { id } = req.params;
+      const user = req.user;
+      if(user.role !== "Admin" && user.role !== "SuperAdmin"){
+        return res.status(403).json({
+            success: false,
+            message: "Only Admins can delete projects",
+        });
+      }
+
+      try {
+
+        const project = await Project.findById(id);
+        if (!project) {
+          return res.status(404).json({
+            success: false,
+            message: "Project not found",
+          });
+        }
+        // Delete image from Cloudinary
+        try {
+          await cloudinary.uploader.destroy(project.image.publicId);
+        } catch (error) {
+          console.log("Error deleting image from Cloudinary:", error);
+          // Proceed with project deletion even if image deletion fails
+        }
+        await project.deleteOne();
+        res.status(200).json({
+          success: true,
+          message: "Project deleted successfully",
+        });
+        
+      } catch (error) {
+        console.log("Error deleting project:", error);
+        res.status(500).json({
+          success: false,
+          message: "Error deleting project",
+          error: error.message,
+        });
+      }
+}
 
 
-export { addProject , getProjects, getProjectById };
+
+export { addProject , getProjects, getProjectById , deleteProject};
