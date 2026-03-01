@@ -199,8 +199,8 @@ const editProject = async (req, res) => {
         demo,
         tech,
         image: {
-          url: uploadedImage.secure_url || project.image.url, // Keep existing image URL if no new image uploaded
-          publicId: uploadedImage.public_id || project.image.publicId, // Keep existing publicId if no new image uploaded
+          url: uploadedImage?.secure_url || project.image.url, // Keep existing image URL if no new image uploaded
+          publicId: uploadedImage?.public_id || project.image.publicId, // Keep existing publicId if no new image uploaded
         },
       }
     );
@@ -213,7 +213,7 @@ const editProject = async (req, res) => {
 
 
   } catch (error) {
-    console.log("error while editing project");
+    console.log("error while editing project", error);
     res.json({
       success: false,
       message: "something went wrong!",
