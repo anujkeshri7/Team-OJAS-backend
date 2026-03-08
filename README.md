@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="/frontend/src/assets/ojas-logo.png" width="60" alt="OJAS Logo" />
+<img src="./assets/ojas-logo.png" width="60" alt="OJAS Logo" />
 
 # Team OJAS — Official Website (Backend)
 
