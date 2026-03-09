@@ -46,7 +46,7 @@ const addProject = async (req, res) => {
     /* ---------------- IMAGE UPLOAD ---------------- */
     let uploadedImage;
     try {
-      console.log("file uploading ", req.file);
+      // console.log("file uploading ", req.file);
       uploadedImage = await cloudinary.uploader.upload(req.file.path, {
         folder: "ojas/projects",
       });
@@ -213,7 +213,7 @@ const editProject = async (req, res) => {
 
 
   } catch (error) {
-    console.log("error while editing project",error);
+    console.log("error while editing project", error);
     res.json({
       success: false,
       message: "something went wrong!",

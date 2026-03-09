@@ -27,7 +27,7 @@ const addMembers = async (req, res) => {
                  url=result.secure_url
                  publicId=result.public_id
 
-                 console.log("Image uploaded to Cloudinary:", result);
+                //  console.log("Image uploaded to Cloudinary:", result);
 
             } catch (error) {
                 console.error("Error uploading image to Cloudinary:", error);
