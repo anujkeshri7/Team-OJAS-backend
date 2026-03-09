@@ -70,7 +70,7 @@ const fetchMembers = async (req, res) => {
     try {
 
         const members = await Member.find();
-        console.log(members);
+       
         res.status(200).json({ members });
         
         

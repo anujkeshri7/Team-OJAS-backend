@@ -18,6 +18,7 @@ import {
   editProject
 } from "../controllers/projects.js";
 import checkAuthMiddelware from "../middelware/checkAuth.js";
+import { uploadImagesController , fetchGalleryImages, deleteGalleryImage } from "../controllers/gallery.js";
 
 const router = Router();
 
@@ -61,5 +62,11 @@ router.get("/get-project/:id", getProjectById);
 router.delete("/delete-project/:id", checkAuthMiddelware, deleteProject);
 
 router.post("/edit-project/:id",checkAuthMiddelware,upload.single("image"),editProject)
+
+router.post('/upload-images',checkAuthMiddelware, upload.array('images', 20), uploadImagesController)
+
+router.get('/gallery', fetchGalleryImages)
+
+router.post('/delete-gallery-image', checkAuthMiddelware, deleteGalleryImage)
 
 export default router;
