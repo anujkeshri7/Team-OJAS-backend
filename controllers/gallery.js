@@ -23,6 +23,18 @@ const uploadImagesController = async (req, res) => {
 
         const results = await Promise.all(uploadedImages);
 
+        const existingGallery = await GalleryModel.findOne({ title });
+
+        if(existingGallery){
+            existingGallery.images.push(...results.map(img => ({ url: img.secure_url, publicId: img.public_id })));
+            await existingGallery.save();
+            return res.status(200).json({
+                success: true,
+                message: "Images added to existing gallery",
+                data: existingGallery
+            })
+        }
+
        
         const galleryImage = new GalleryModel({
             title,
@@ -85,11 +97,18 @@ const deleteGalleryImage = async (req, res) => {
             })
         }
 
-        await GalleryModel.findOneAndUpdate(
+        const galleryImage = await GalleryModel.findOneAndUpdate(
             { "images.publicId": publicId },
             { $pull: { images: { publicId } } },
-            { new: true }
+            { returnDocument: "after" }
         );
+
+        const image = await GalleryModel.findOne({"title": galleryImage.title});
+        if(image.images.length === 0){
+            await GalleryModel.findByIdAndDelete(galleryImage._id);
+        }
+
+
 
         res.json({
             success: true,
