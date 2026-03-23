@@ -20,6 +20,8 @@ import {
 import checkAuthMiddelware from "../middelware/checkAuth.js";
 import { uploadImagesController , fetchGalleryImages, deleteGalleryImage } from "../controllers/gallery.js";
 
+import Member from "../models/member.js";
+
 const router = Router();
 
 router.post("/add-member", upload.single("profilePic"), addMembers);
@@ -68,5 +70,6 @@ router.post('/upload-images',checkAuthMiddelware, upload.array('images', 20), up
 router.get('/gallery', fetchGalleryImages)
 
 router.post('/delete-gallery-image', checkAuthMiddelware, deleteGalleryImage)
+
 
 export default router;
